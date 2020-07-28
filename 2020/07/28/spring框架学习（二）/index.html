@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>spring框架学习（二） | Xiepeg的博客</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="spring框架学习（二） | Xiepeg的博客">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="基于注解的IOC配置一、基于注解的配置方式   对于账户的业务层实现类，如果使用xml配置，曾经XML的配置：    &lt;bean id&#x3D;&quot;accountService&quot; class&#x3D;&quot;com.spring.service.impl.AccountServiceImpl&quot;         scope&#x3D;&quot;&quot;  init-method&#x3D;&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring框架学习（二）">
+<meta property="og:url" content="http://yoursite.com/2020/07/28/spring%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89/index.html">
+<meta property="og:site_name" content="Xiepeg的博客">
+<meta property="og:description" content="基于注解的IOC配置一、基于注解的配置方式   对于账户的业务层实现类，如果使用xml配置，曾经XML的配置：    &lt;bean id&#x3D;&quot;accountService&quot; class&#x3D;&quot;com.spring.service.impl.AccountServiceImpl&quot;         scope&#x3D;&quot;&quot;  init-method&#x3D;&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/images/pasted-8.png">
+<meta property="article:published_time" content="2020-07-28T09:54:03.000Z">
+<meta property="article:modified_time" content="2020-07-28T12:41:46.420Z">
+<meta property="article:author" content="Xiepeg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/pasted-8.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+</div>
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>Xiepeg</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a title="email" href="mailto:2278564273@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=2278564273&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active" data-rel="全部文章">全部文章<small>(3)</small></div></li>
+    
+        
+            
+            <li><div data-rel="后端">后端<small>(3)</small></div>
+                
+            </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="3">
+<input type="hidden" id="yelog_site_word_count" value="5.3k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" />
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="全部文章 后端 "
+           href="/2020/07/28/spring%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="spring框架学习（二）">spring框架学习（二）</span>
+            <span class="post-date" title="2020-07-28 17:54:03">2020/07/28</span>
+        </a>
+        
+        <a  class="全部文章 后端 "
+           href="/2020/07/24/Mybatis%EF%BC%88%E4%BA%8C%EF%BC%89/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Mybatis（二）">Mybatis（二）</span>
+            <span class="post-date" title="2020-07-24 18:41:51">2020/07/24</span>
+        </a>
+        
+        <a  class="全部文章 后端 "
+           href="/2020/07/10/Mybitis%EF%BC%88%E4%B8%80%EF%BC%89/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Mybatis（一）">Mybatis（一）</span>
+            <span class="post-date" title="2020-07-10 18:57:00">2020/07/10</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-spring框架学习（二）" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">spring框架学习（二）</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="后端">后端</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2020-07-28 20:41:46'>2020-07-28 17:54</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:2.3k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#基于注解的IOC配置"><span class="toc-text">基于注解的IOC配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、基于注解的配置方式"><span class="toc-text">一、基于注解的配置方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、改造XML配置方式"><span class="toc-text">二、改造XML配置方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、在pom-xml下导入依赖jar包"><span class="toc-text">1、在pom.xml下导入依赖jar包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、在xml文件中开启扫描包"><span class="toc-text">2、在xml文件中开启扫描包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、实现账户类Account"><span class="toc-text">3、实现账户类Account</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4、实现dao层接口和实现类"><span class="toc-text">4、实现dao层接口和实现类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5、实现service层接口和实现类"><span class="toc-text">5、实现service层接口和实现类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6、创建配置类"><span class="toc-text">6、创建配置类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7、测试-junit单元测试"><span class="toc-text">7、测试(junit单元测试)</span></a></li></ol></li></ol></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="基于注解的IOC配置"><a href="#基于注解的IOC配置" class="headerlink" title="基于注解的IOC配置"></a>基于注解的IOC配置</h1><h2 id="一、基于注解的配置方式"><a href="#一、基于注解的配置方式" class="headerlink" title="一、基于注解的配置方式"></a>一、基于注解的配置方式</h2><p>   对于账户的业务层实现类，如果使用xml配置，<br>曾经XML的配置：</p>
+<pre><code>   &lt;bean id=&quot;accountService&quot; class=&quot;com.spring.service.impl.AccountServiceImpl&quot;
+        scope=&quot;&quot;  init-method=&quot;&quot; destroy-method=&quot;&quot;&gt;
+       &lt;property name=&quot;&quot;  value=&quot;&quot; | ref=&quot;&quot;&gt;&lt;/property&gt;
+   &lt;/bean&gt;</code></pre><p>这段代码的作用就是在spring核心容器中使用反射机制创建了一个对象，这个对象可以被外部访问，避免了使用new关键字，能降低程序耦合性。<br>而这种操作还有另一种方式，即使用注解配置。</p>
+<p>注解的核心功能也是用于创建对象的，他们的作用就和在XML配置文件中编写一个<bean>标签实现的功能是一样的。</p>
+<blockquote>
+<p> Component:<br>       作用：用于把当前类对象存入spring容器中<br>       属性：value：用于指定bean的id。当我们不写时，它的默认值是当前类名，且首字母改小写。<br>       Controller：一般用在表现层<br>       Service：一般用在业务层<br>       Repository：一般用在持久层<br>以上三个注解他们的作用和属性与Component是一模一样。他们三个是spring框架为我们提供明确的三层使用的注解，使我们的三层对象更加清晰。</p>
+</blockquote>
+<p>对于使用注解方式注入数据，我们也可使用其他关键字，他们的作用就和在xml配置文件中的bean标签中写一个<property>标签的作用是一样的.</p>
+<blockquote>
+<p>Autowired:<br>作用：自动按照类型注入。只要容器中有唯一的一个bean对象类型和要注入的变量类型匹配，就可以注入成功;<br>如果ioc容器中没有任何bean的类型和要注入的变量类型匹配，则报错。<br>如果Ioc容器中有多个类型匹配时：1).先按类型找到匹配的类型；2).在按变量名寻找（看变量名是否与类名相同，变量名就是spring中的key）；3).如果都找不到，考虑加上Qualifier标签。<br>Autowired的出现位置：可以是变量上，也可以是方法上<br>细节：在使用注解注入时，set方法就不是必须的了。</p>
+</blockquote>
+<blockquote>
+<p>Qualufier<br>作用：在按照类中注入的基础之上再按照名称注入。它在给类成员注入时不能单独使用。但是在给方法参数注入时可以；<br>属性：<br>    value：用于指定注入bean的id。</p>
+</blockquote>
+<blockquote>
+<p> Resource<br>作用：直接按照bean的id注入。它可以独立使用<br>属性：<br>    name：用于指定bean的id。</p>
+</blockquote>
+<p>以上三个注入都只能注入其他bean类型的数据，而基本类型和String类型无法使用上述注解实现。另外，集合类型的注入只能通过XML来实现。</p>
+<blockquote>
+<p>Value<br>作用：用于注入基本类型和String类型的数据<br>属性：<br>    value：用于指定数据的值。它可以使用spring中SpEL(也就是spring的el表达式）<br>    SpEL的写法：${表达式}</p>
+</blockquote>
+<blockquote>
+<p>Scope<br>作用：用于指定bean的作用范围<br>属性：<br>    value：指定范围的取值。常用取值：singleton prototype</p>
+</blockquote>
+<h2 id="二、改造XML配置方式"><a href="#二、改造XML配置方式" class="headerlink" title="二、改造XML配置方式"></a>二、改造XML配置方式</h2><p>接下来我们来使用Maven项目构件基于注解的方式来实现连接数据库的操作</p>
+<p><img src="/images/pasted-8.png" alt="三层架构结构图"></p>
+<h4 id="1、在pom-xml下导入依赖jar包"><a href="#1、在pom-xml下导入依赖jar包" class="headerlink" title="1、在pom.xml下导入依赖jar包"></a>1、在pom.xml下导入依赖jar包</h4><pre><code>  &lt;dependencies&gt;
+          &lt;dependency&gt;
+              &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+              &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+              &lt;version&gt;5.1.16.RELEASE&lt;/version&gt;
+          &lt;/dependency&gt;
+          &lt;dependency&gt;
+              &lt;groupId&gt;mysql&lt;/groupId&gt;
+              &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+              &lt;version&gt;5.1.39&lt;/version&gt;
+          &lt;/dependency&gt;
+          &lt;dependency&gt;
+              &lt;groupId&gt;commons-dbutils&lt;/groupId&gt;
+              &lt;artifactId&gt;commons-dbutils&lt;/artifactId&gt;
+              &lt;version&gt;1.7&lt;/version&gt;
+          &lt;/dependency&gt;
+          &lt;dependency&gt;
+              &lt;groupId&gt;c3p0&lt;/groupId&gt;
+              &lt;artifactId&gt;c3p0&lt;/artifactId&gt;
+              &lt;version&gt;0.9.1.2&lt;/version&gt;
+          &lt;/dependency&gt;
+          &lt;dependency&gt;
+              &lt;groupId&gt;junit&lt;/groupId&gt;
+              &lt;artifactId&gt;junit&lt;/artifactId&gt;
+              &lt;version&gt;4.13&lt;/version&gt;
+              &lt;scope&gt;test&lt;/scope&gt;
+          &lt;/dependency&gt;
+      &lt;/dependencies&gt;</code></pre><h4 id="2、在xml文件中开启扫描包"><a href="#2、在xml文件中开启扫描包" class="headerlink" title="2、在xml文件中开启扫描包"></a>2、在xml文件中开启扫描包</h4><p>在resources下新建文件bean.xml，使用context:compoent-scan base-package标签来开启注解模式，这样spring会自动去扫描改包下的注解用于在容器中创建对象：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd&quot;&gt;
+    &lt;context:component-scan base-package=&quot;com.spring&quot;&gt;&lt;/context:component-scan&gt;
+&lt;/beans&gt;</code></pre><p>同时创建文件jdbc.properties用于指定数据库的连接参数：</p>
+<pre><code>DriverClass=com.mysql.jdbc.Driver
+JdbcUrl=jdbc:mysql://localhost:3306/eesy
+User=root
+Password=aaa888aaa</code></pre><h4 id="3、实现账户类Account"><a href="#3、实现账户类Account" class="headerlink" title="3、实现账户类Account"></a>3、实现账户类Account</h4><pre><code>public class Account {
+    private Integer id;
+    private String name;
+    private Float money;
+    public Integer getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
+    public Float getMoney() {
+        return money;
+    }
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setMoney(Float money) {
+        this.money = money;
+    }
+    @Override
+    public String toString() {
+        return &quot;Account{&quot; +
+                &quot;id=&quot; + id +
+                &quot;, name=&#39;&quot; + name + &#39;\&#39;&#39; +
+                &quot;, money=&quot; + money +
+                &#39;}&#39;;
+    }
+}</code></pre><h4 id="4、实现dao层接口和实现类"><a href="#4、实现dao层接口和实现类" class="headerlink" title="4、实现dao层接口和实现类"></a>4、实现dao层接口和实现类</h4><pre><code>public interface AccountDao {
+    List&lt;Account&gt; findAll();
+
+    Account findById(Integer id);
+
+    void saveAccount(Account account);
+
+    void updateAccount(Account account);
+
+    void deleteAccount(Integer id);
+}</code></pre><pre><code>@Repository
+public class AccountDaoImpl implements AccountDao {
+    @Autowired
+    private QueryRunner runner;
+    @Override
+    public List&lt;Account&gt; findAll() {
+        try{
+            return runner.query(&quot;select * from account&quot;,new BeanListHandler&lt;Account&gt;(Account.class));
+        }catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @Override
+    public Account findById(Integer accountId) {
+        try{
+            return runner.query(&quot;select * from account where id = ? &quot;,new BeanHandler&lt;Account&gt;(Account.class),accountId);
+        }catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @Override
+    public void saveAccount(Account account) {
+        try{
+            runner.update(&quot;insert into account(name,money)values(?,?)&quot;,account.getName(),account.getMoney());
+        }catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @Override
+    public void updateAccount(Account account) {
+        try{
+            runner.update(&quot;update account set name=?,money=? where id=?&quot;,account.getName(),account.getMoney(),account.getId());
+        }catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @Override
+    public void deleteAccount(Integer accountId) {
+        try{
+            runner.update(&quot;delete from account where id=?&quot;,accountId);
+        }catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+}</code></pre><h4 id="5、实现service层接口和实现类"><a href="#5、实现service层接口和实现类" class="headerlink" title="5、实现service层接口和实现类"></a>5、实现service层接口和实现类</h4><pre><code>public interface AccountService {
+    List&lt;Account&gt; findAll();
+    Account findById(Integer id);
+    void saveAccount(Account account);
+    void updateAccount(Account account);
+    void deleteAccount(Integer id);
+}</code></pre><pre><code>@Service
+public class AccountServiceImpl implements AccountService {
+    @Autowired
+    private AccountDao accountDao;
+    public List&lt;Account&gt; findAll() {
+        return accountDao.findAll();
+    }
+    public Account findById(Integer id) {
+        return accountDao.findById(id);
+    }
+    public void saveAccount(Account account) {
+        accountDao.saveAccount(account);
+    }
+    public void updateAccount(Account account) {
+        accountDao.updateAccount(account);
+    }
+    public void deleteAccount(Integer id) {
+        accountDao.deleteAccount(id);
+    }
+}
+</code></pre><h4 id="6、创建配置类"><a href="#6、创建配置类" class="headerlink" title="6、创建配置类"></a>6、创建配置类</h4><p>模拟软件的三层架构后我们发现我们还没有连接上数据库，主要原因是我们还没有配置QueryRunner。因为spring容器中没有QueryRunner实例所以在dao层自动导入会失败。所以我们得新建一个配置类来实现QueryRunner的导入并让其绑定我们需要操作的数据库。</p>
+<p>在config目录下新建一个类：SpringConfigration.java<br>该类是一个配置类，它的作用和bean.xml是一样的</p>
+<blockquote>
+<p>Configuration<br>      作用：指定当前类是一个配置类<br>      细节：当配置类作为AnnotationConfigApplicationContext对象创建的参数        时，该注解可以不写。<br>ComponentScan<br>       作用：用于通过注解指定spring在创建容器时要扫描的包<br>       属性：<br>           value：它和basePackages的作用是一样的，都是用于指定创建容器时要扫描的包。<br>我们使用此注解就等同于在xml中配置了:<br>&lt;context:component-scan base-package=”com.spring”&gt;</context:component-scan><br>所以bene.xml文件可以不创建。</p>
+</blockquote>
+<blockquote>
+<p>  Bean<br>       作用：用于把当前方法的返回值作为bean对象存入spring的ioc容器中<br>       属性:<br>           name:用于指定bean的id。当不写时，默认值是当前方法的名称<br>       细节：<br>           当我们使用注解配置方法时，如果方法有参数，spring框架会去容器中查找有没有可用的bean对象。查找的方式和Autowired注解的作用是一样的</p>
+</blockquote>
+<blockquote>
+<p>   Import<br>       作用：用于导入其他的配置类<br>       属性：<br>           value：用于指定其他配置类的字节码。<br>                   当我们使用Import的注解之后，有Import注解的类就父配置类，而导入的都是子配置类</p>
+</blockquote>
+<blockquote>
+<p> PropertySource<br>       作用：用于指定properties文件的位置<br>       属性：<br>           value：指定文件的名称和路径。<br>                   关键字：classpath，表示类路径下                   </p>
+</blockquote>
+<pre><code>@Configuration
+@PropertySource(&quot;classpath:jdbc.properties&quot;)
+@ComponentScan(basePackages = {&quot;com.spring&quot;})
+public class SpringConfiguration {
+    @Value(&quot;${DriverClass}&quot;)
+    private String DriverClass;
+
+    @Value(&quot;${JdbcUrl}&quot;)
+    private String JdbcUrl;
+
+    @Value(&quot;${User}&quot;)
+    private String User;
+
+    @Value(&quot;${Password}&quot;)
+    private String Password;
+
+    @Bean(name = &quot;runner&quot;)
+    @Scope(&quot;prototype&quot;)
+    public QueryRunner createQueryRunner(DataSource ds) {
+        return new QueryRunner(ds);
+    }
+    @Bean(name = &quot;datasource&quot;)
+
+    public DataSource createDataSource() throws PropertyVetoException {
+        ComboPooledDataSource ds = new ComboPooledDataSource();
+        ds.setDriverClass(DriverClass);
+        ds.setJdbcUrl(JdbcUrl);
+        ds.setUser(User);
+        ds.setPassword(Password);
+        return ds;
+    }
+}
+</code></pre><h4 id="7、测试-junit单元测试"><a href="#7、测试-junit单元测试" class="headerlink" title="7、测试(junit单元测试)"></a>7、测试(junit单元测试)</h4><ul>
+<li>当我们使用的是xml文件指定扫描的包时，创建容器时使用:<br><code>ApplicationContext ac=new ClassPathXmlApplicationContext(&quot;bean.xml&quot;);</code><br>即依然使用xml文件来实现指定扫描的包；</li>
+</ul>
+<pre><code>    @Test
+    public void testfindall() {
+        ApplicationContext ac=new ClassPathXmlApplicationContext(&quot;bean.xml&quot;);
+//        ApplicationContext ac=new AnnotationConfigApplicationContext(SpringConfiguration.class);
+        AccountService as= (AccountService) ac.getBean(&quot;accountServiceImpl&quot;);
+        List&lt;Account&gt; lst=as.findAll();
+        for(Account account:lst){
+            System.out.println(account);
+        }
+    }
+</code></pre><p>+当我们使用的是配置类指定扫描包时，创建容器使用：<br><code>ApplicationContext ac=new AnnotationConfigApplicationContext(SpringConfiguration.class);</code></p>
+<pre><code>    @Test
+    public void testfindall() {
+//        ApplicationContext ac=new ClassPathXmlApplicationContext(&quot;bean.xml&quot;);
+        ApplicationContext ac=new AnnotationConfigApplicationContext(SpringConfiguration.class);
+        AccountService as= (AccountService) ac.getBean(&quot;accountServiceImpl&quot;);
+        List&lt;Account&gt; lst=as.findAll();
+        for(Account account:lst){
+            System.out.println(account);
+        }
+    }
+</code></pre><p>两种都能运行成功：</p>
+<pre><code>Account{id=1, name=&#39;aaa&#39;, money=800.0}
+Account{id=2, name=&#39;bbb&#39;, money=1200.0}
+Account{id=3, name=&#39;ccc&#39;, money=1000.0}
+Account{id=4, name=&#39;ddd&#39;, money=1000.0}
+Account{id=5, name=&#39;eee&#39;, money=1000.0}
+
+Process finished with exit code 0</code></pre>
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 jaytp@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 Yelog
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
