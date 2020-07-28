@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>spring框架学习（一） | Xiepeg的博客</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="spring框架学习（一） | Xiepeg的博客">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="基于注解的IOC配置一、基于注解的配置方式   对于账户的业务层实现类，如果使用xml配置，曾经XML的配置：    &lt;bean id&#x3D;&quot;accountService&quot; class&#x3D;&quot;com.spring.service.impl.AccountServiceImpl&quot;         scope&#x3D;&quot;&quot;  init-method&#x3D;&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring框架学习（二）">
+<meta property="og:url" content="http://yoursite.com/2020/07/28/spring%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89/index.html">
+<meta property="og:site_name" content="Xiepeg的博客">
+<meta property="og:description" content="基于注解的IOC配置一、基于注解的配置方式   对于账户的业务层实现类，如果使用xml配置，曾经XML的配置：    &lt;bean id&#x3D;&quot;accountService&quot; class&#x3D;&quot;com.spring.service.impl.AccountServiceImpl&quot;         scope&#x3D;&quot;&quot;  init-method&#x3D;&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/images/pasted-8.png">
+<meta property="article:published_time" content="2020-07-28T09:54:03.000Z">
+<meta property="article:modified_time" content="2020-07-28T12:41:46.420Z">
+<meta property="article:author" content="Xiepeg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/pasted-8.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+</div>
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>Xiepeg</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a title="email" href="mailto:2278564273@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=2278564273&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active" data-rel="全部文章">全部文章<small>(4)</small></div></li>
+    
+        
+            
+            <li><div data-rel="后端">后端<small>(4)</small></div>
+                
+            </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="4">
+<input type="hidden" id="yelog_site_word_count" value="8.9k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" />
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="全部文章 后端 "
+           href="/2020/07/28/spring%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="spring框架学习（二）">spring框架学习（二）</span>
+            <span class="post-date" title="2020-07-28 17:54:03">2020/07/28</span>
+        </a>
+        
+        <a  class="全部文章 后端 "
+           href="/2020/07/25/spring%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="spring框架学习（一）">spring框架学习（一）</span>
+            <span class="post-date" title="2020-07-25 17:15:03">2020/07/25</span>
+        </a>
+        
+        <a  class="全部文章 后端 "
+           href="/2020/07/24/Mybatis%EF%BC%88%E4%BA%8C%EF%BC%89/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Mybatis（二）">Mybatis（二）</span>
+            <span class="post-date" title="2020-07-24 18:41:51">2020/07/24</span>
+        </a>
+        
+        <a  class="全部文章 后端 "
+           href="/2020/07/10/Mybitis%EF%BC%88%E4%B8%80%EF%BC%89/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Mybatis（一）">Mybatis（一）</span>
+            <span class="post-date" title="2020-07-10 18:57:00">2020/07/10</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-spring框架学习（一）" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">spring框架学习（一）</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="后端">后端</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2020-07-28 20:53:18'>2020-07-25 17:15</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:3.5k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#spring框架初识"><span class="toc-text">spring框架初识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、基本概念"><span class="toc-text">一、基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、传统开发方式存在的一些弊端"><span class="toc-text">二、传统开发方式存在的一些弊端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、spring的IOC概念及作用"><span class="toc-text">三、spring的IOC概念及作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、spring基于XML的IOC环境搭建"><span class="toc-text">四、spring基于XML的IOC环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、在pom-xml中导入spring坐标"><span class="toc-text">1、在pom.xml中导入spring坐标</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、在resources下创建配置文件"><span class="toc-text">2、在resources下创建配置文件</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、spring对bean的管理细节"><span class="toc-text">五、spring对bean的管理细节</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-创建bean的三种方式"><span class="toc-text">1. 创建bean的三种方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-bean对象的作用范围"><span class="toc-text">2.bean对象的作用范围</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-bean对象的生命周期"><span class="toc-text">3.bean对象的生命周期</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#六、spring的依赖注入"><span class="toc-text">六、spring的依赖注入</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="spring框架初识"><a href="#spring框架初识" class="headerlink" title="spring框架初识"></a>spring框架初识</h1><h2 id="一、基本概念"><a href="#一、基本概念" class="headerlink" title="一、基本概念"></a>一、基本概念</h2><p>　Spring是一种多层的J2EE应用程序框架，其核心就是管理资源组件以及依赖关系，Spring框架为现代基于java的企业应用程序提供了一个全面的编程和配置模型。</p>
+<h2 id="二、传统开发方式存在的一些弊端"><a href="#二、传统开发方式存在的一些弊端" class="headerlink" title="二、传统开发方式存在的一些弊端"></a>二、传统开发方式存在的一些弊端</h2><p>假设如今我们需要实现一个功能：保存用户账户。以下按照软件三层架构，即界面层，业务逻辑层，持久层去构件代码结构（使用maven来创建）：</p>
+<p><img src="/images/pasted-6.png" alt="软件基本结构"></p>
+<pre><code>package com.spring.dao;
+/**
+ * 账户的持久层接口
+ */
+public interface IAccountDao {
+    /**
+     * 模拟保存账户
+     */
+    void saveAccount();
+}
+</code></pre><pre><code>package com.spring.dao.impl;
+
+
+import com.spring.dao.IAccountDao;
+/**
+ * 账户的持久层实现类
+ */
+public class AccountDaoImpl implements IAccountDao {
+    public void saveAccount(){
+        System.out.println(&quot;保存了账户&quot;);
+    }
+}
+</code></pre><pre><code>package com.spring.service;
+/**
+ * 账户业务层的接口
+ */
+public interface IAccountService {
+    /**
+     * 模拟保存账户
+     */
+    void saveAccount();
+}
+</code></pre><pre><code>package com.spring.service.impl;
+        import com.spring.dao.IAccountDao;
+        import com.spring.dao.impl.AccountDaoImpl;
+        import com.spring.service.IAccountService;
+/**
+ * 账户的业务层实现类
+ */
+public class AccountServiceImpl implements IAccountService {
+    private IAccountDao accountDao=new AccountDaoImpl();
+    public void  saveAccount(){
+        accountDao.saveAccount();
+    }
+}
+
+</code></pre><p>我们不妨写一个测试程序来实现账户的保存操作：</p>
+<pre><code>/**
+ * 模拟一个表现层，用于调用业务层
+ */
+public class Client {
+    public static void main(String[] args) {
+        IAccountService ia=new AccountServiceImpl();
+        ia.saveAccount();
+    }
+}</code></pre><pre><code>运行结果：
+保存了账户
+Process finished with exit code 0</code></pre><p>仔细分析我们不难发现，这个项目存在很大的缺陷：程序间的耦合性大，即程序间的依赖关系大，其中包括：</p>
+<ul>
+<li>类之间的依赖</li>
+<li>方法间的依赖。</li>
+</ul>
+<blockquote>
+<p>当我们在调用界面层操作的时候，我们会new一个业务层对象，同时会new一个持久层对象。假设我们不小心删除了其中的一个实现类，会导致项目的编译出错。所以我们要采用解耦的方式来降低程序之间的依赖。做到在实际开发中：编译期尽量不依赖，运行时才依赖。尽量降低程序耦合性即解耦：</p>
+</blockquote>
+<p>解耦的基本思路：</p>
+<ul>
+<li>第一步：使用反射来创建对象，而避免使用new关键字。</li>
+<li>第二步：通过读取配置文件来获取要创建的对象全限定类名</li>
+</ul>
+<hr>
+<p> 我们不妨使用工厂类的方式来实现解耦。工厂模式（Factory Pattern）是 Java 中最常用的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。</p>
+<p> 使用反射机制我们可以选择使用全类名的方式，首先在resources下定义一个配置文件bean.properties:</p>
+<pre><code>accountService=com.spring.service.impl.AccountServiceImpl
+accountDao=com.spring.dao.impl.AccountDaoImpl</code></pre><p> 接着创建com/spring/factory/BeanFactory.java工厂类：</p>
+<pre><code> public class BeanFactory {
+    //定义一个Properties对象
+    private static Properties props;
+    //定义一个Map,用于存放我们要创建的对象。我们把它称之为容器
+    private static Map&lt;String,Object&gt; beans;
+    //使用静态代码块为Properties对象赋值
+    static {
+        try {
+            //实例化对象
+            props = new Properties();
+            //获取properties文件的流对象
+            InputStream in = BeanFactory.class.getClassLoader().getResourceAsStream(&quot;bean.properties&quot;);
+            props.load(in);
+            //实例化容器
+            beans = new HashMap&lt;String,Object&gt;();
+            //取出配置文件中所有的Key
+            Enumeration keys = props.keys();
+            //遍历枚举
+            while (keys.hasMoreElements()){
+                //取出每个Key
+                String key = keys.nextElement().toString();
+                //根据key获取value
+                String beanPath = props.getProperty(key);
+                //反射创建对象
+                Object value = Class.forName(beanPath).newInstance();
+                //把key和value存入容器中
+                beans.put(key,value);
+            }
+        }catch(Exception e){
+            throw new ExceptionInInitializerError(&quot;初始化properties失败！&quot;);
+        }
+    }
+    /**
+     * 根据bean的名称获取对象
+     * @param beanName
+     * @return
+     */
+    public static Object getBean(String beanName){
+        return beans.get(beanName);
+    }</code></pre><p>修改账户的业务层实现类</p>
+<pre><code>/**
+ * 账户的业务层实现类
+ */
+public class AccountServiceImpl implements IAccountService {
+    private IAccountDao accountDao= (IAccountDao) BeanFactory.getBean(&quot;accountDao&quot;);
+    public void  saveAccount(){
+        accountDao.saveAccount();
+    }
+}</code></pre><p>重新定义主方法：</p>
+<pre><code>/**
+ * 模拟一个表现层，用于调用业务层
+ */
+public class Client {
+    public static void main(String[] args) {
+        IAccountService ia= (IAccountService) BeanFactory.getBean(&quot;accountService&quot;);
+        ia.saveAccount();
+    }
+}</code></pre><p>同样的，也能实现模拟保存账户的操作。</p>
+<h2 id="三、spring的IOC概念及作用"><a href="#三、spring的IOC概念及作用" class="headerlink" title="三、spring的IOC概念及作用"></a>三、spring的IOC概念及作用</h2><p>在上述例子中，我们在创建持久层和业务逻辑层的对象时并不是简单的new一个出来，而是使用反射的技术，通过配置文件中给的参数来创建工厂，利用工厂来得到我们需要的对象。在这个过程中，创建类的控制权从传统的new方式转移到了工厂，这个过程也就是IOC的原理。</p>
+<p>引用百度百科关于IOC技术的描述：</p>
+<blockquote>
+<p>Class A中用到了Class B的对象b，一般情况下，需要在A的代码中显式的new一个B的对象。<br>采用依赖注入技术之后，A的代码只需要定义一个私有的B对象，不需要直接new来获得这个对象，而是通过相关的容器控制程序来将B对象在外部new出来并注入到A类里的引用中。而具体获取的方法、对象被获取时的状态由配置文件（如XML）来指定。</p>
+</blockquote>
+<p>而在实际开发中我们不需要再去定义工厂，spring框架已经帮我们将这个工作完成了，接下来我们基于xml来构建spring的IOC开发环境。</p>
+<h2 id="四、spring基于XML的IOC环境搭建"><a href="#四、spring基于XML的IOC环境搭建" class="headerlink" title="四、spring基于XML的IOC环境搭建"></a>四、spring基于XML的IOC环境搭建</h2><p>新建一个Maven项目：</p>
+<p><img src="/images/pasted-7.png" alt="项目截图"></p>
+<h4 id="1、在pom-xml中导入spring坐标"><a href="#1、在pom-xml中导入spring坐标" class="headerlink" title="1、在pom.xml中导入spring坐标"></a>1、在pom.xml中导入spring坐标</h4><pre><code>&lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+            &lt;version&gt;5.1.16.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre><h4 id="2、在resources下创建配置文件"><a href="#2、在resources下创建配置文件" class="headerlink" title="2、在resources下创建配置文件"></a>2、在resources下创建配置文件</h4><p>在这里我们创建bean.xml文件</p>
+<ul>
+<li>先导入约束:约束可以从官网上获取。</li>
+<li>把对象的创建交给spring</li>
+</ul>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+    &lt;!--以上是spring的xml约束--&gt;
+
+    &lt;!--把对象的创建交给spring来操作--&gt;
+    &lt;bean id=&quot;AccountService&quot; class=&quot;com.spring.service.impl.AccountServiceImpl&quot;&gt;&lt;/bean&gt;
+    &lt;bean id=&quot;AccountDao&quot; class=&quot;com.spring.dao.impl.AccountDaoImpl&quot;&gt;&lt;/bean&gt;
+&lt;/beans&gt;</code></pre><ul>
+<li>修改持久层AccountDaoImp以业务层操作AccountServiceImpl：</li>
+</ul>
+<pre><code>/**
+ * 账户的持久层实现类
+ */
+public class AccountDaoImpl implements IAccountDao {
+
+    public void saveAccount(){
+        System.out.println(&quot;保存了账户&quot;);
+    }
+}
+
+/**
+ * 账户的业务层实现类
+ */
+public class AccountServiceImpl implements IAccountService {
+    private IAccountDao accountDao ;
+    public void  saveAccount(){
+        accountDao.saveAccount();
+    }
+}</code></pre><ul>
+<li><p>定义主方法：</p>
+</li>
+<li><p>获取核心容器对象 ApplicationContext</p>
+<blockquote>
+<p>ApplicationContext ac =new ClassPathXmlApplicationContext(“bean.xml”);</p>
+</blockquote>
+</li>
+<li><p>获取spring的Ioc核心容器，并根据id获取对象<br>ApplicationContext的三个常用实现类：</p>
+</li>
+</ul>
+<blockquote>
+<p>ClassPathXmlApplicationContext：它可以加载类路径下的配置文件，要求配置文件必须在类路径下。不在的话，加载不了。(更常用)</p>
+</blockquote>
+<blockquote>
+<p>FileSystemXmlApplicationContext：它可以加载磁盘任意路径下的配置文件(必须有访问权限）</p>
+</blockquote>
+<blockquote>
+<p>AnnotationConfigApplicationContext：它是用于读取注解创建容器。</p>
+</blockquote>
+<p>核心容器的两个接口引发出的问题：</p>
+<blockquote>
+<p>ApplicationContext:单例对象适用   采用此接口<br>它在构建核心容器时，创建对象采取的策略是采用立即加载的方式。也就是说，只要一读取完配置文件马上就创建配置文件中配置的对象。</p>
+</blockquote>
+<blockquote>
+<p>BeanFactory:多例对象适用<br>           它在构建核心容器时，创建对象采取的策略是采用延迟加载的方式。也就是说，什么时候根据id获取对象了，什么时候才真正的创建对象。</p>
+</blockquote>
+<p>注：其中单例模式指涉及到一个单一的类，该类负责创建自己的对象，同时确保只有单个对象被创建。这个类提供了一种访问其唯一的对象的方式，可以直接访问，不需要实例化该类的对象。而多例模式可以创建多个对象。</p>
+<pre><code>  public static void main(String[] args) {
+        //1.获取核心容器对象
+        ApplicationContext ac =new ClassPathXmlApplicationContext(&quot;bean.xml&quot;);
+        //2.根据id获取Bean对象(两种强转方式)
+        IAccountService as  = (IAccountService)ac.getBean(&quot;AccountService&quot;);
+        IAccountDao adao = ac.getBean(&quot;AccountDao&quot;,IAccountDao.class);
+        System.out.println(as);
+        System.out.println(adao);</code></pre><p>执行结果：</p>
+<pre><code>com.spring.service.impl.AccountServiceImpl@6a4f787b
+com.spring.dao.impl.AccountDaoImpl@685cb137
+
+Process finished with exit code 0
+</code></pre><h2 id="五、spring对bean的管理细节"><a href="#五、spring对bean的管理细节" class="headerlink" title="五、spring对bean的管理细节"></a>五、spring对bean的管理细节</h2><h4 id="1-创建bean的三种方式"><a href="#1-创建bean的三种方式" class="headerlink" title="1. 创建bean的三种方式"></a>1. 创建bean的三种方式</h4><blockquote>
+<p>第一种方式：使用默认构造函数创建。<br>在spring的配置文件中使用bean标签，配以id和class属性之后，且没有其他属性和标签时。<br>采用的就是默认构造函数创建bean对象，此时如果类中没有默认构造函数，则对象无法创建。</p>
+</blockquote>
+<pre><code>&lt;bean id=&quot;accountService&quot; class=&quot;com.itheima.service.impl.AccountServiceImpl&quot;&gt;&lt;/bean&gt;</code></pre><blockquote>
+<p>第二种方式： 使用普通工厂中的方法创建对象（使用某个类中的方法创建对象，并存入spring容器）</p>
+</blockquote>
+<pre><code>&lt;bean id=&quot;instanceFactory&quot; class=&quot;com.itheima.factory.InstanceFactory&quot;&gt;&lt;/bean&gt;
+&lt;bean id=&quot;accountService&quot; factory-bean=&quot;instanceFactory&quot; factory-method=&quot;getAccountService&quot;&gt;&lt;/bean&gt;</code></pre><blockquote>
+<p>第三种方式：使用工厂中的静态方法创建对象（使用某个类中的静态方法创建对象，并存入spring容器)</p>
+</blockquote>
+<pre><code>&lt;bean id=&quot;accountService&quot; class=&quot;com.itheima.factory.StaticFactory&quot; factory-method=&quot;getAccountService&quot;&gt;&lt;/bean&gt;</code></pre><h4 id="2-bean对象的作用范围"><a href="#2-bean对象的作用范围" class="headerlink" title="2.bean对象的作用范围"></a>2.bean对象的作用范围</h4><blockquote>
+<p>bean标签的scope属性：<br>            作用：用于指定bean的作用范围<br>            取值： 常用的就是单例的和多例的<br>                     singleton：单例的（默认值）<br>                prototype：多例的<br>                request：作用于web应用的请求范围<br>                session：作用于web应用的会话范围<br>                global-session：作用于集群环境的会话范围（全局会话范围），当不是集群环境时，它就是session</p>
+</blockquote>
+<pre><code>&lt;bean id=&quot;accountService&quot; class=&quot;com.itheima.service.impl.AccountServiceImpl&quot; scope=&quot;prototype&quot;&gt;&lt;/bean&gt;</code></pre><h4 id="3-bean对象的生命周期"><a href="#3-bean对象的生命周期" class="headerlink" title="3.bean对象的生命周期"></a>3.bean对象的生命周期</h4><blockquote>
+<p>单例对象<br>                出生：当容器创建时对象出生<br>                活着：只要容器还在，对象一直活着<br>                死亡：容器销毁，对象消亡<br>                总结：单例对象的生命周期和容器相同</p>
+</blockquote>
+<blockquote>
+<p>多例对象<br>                出生：当我们使用对象时spring框架为我们创建<br>                活着：对象只要是在使用过程中就一直活着。<br>                死亡：当对象长时间不用，且没有别的对象引用时，由Java的垃圾回收器回收</p>
+</blockquote>
+<h2 id="六、spring的依赖注入"><a href="#六、spring的依赖注入" class="headerlink" title="六、spring的依赖注入"></a>六、spring的依赖注入</h2><p>在当前类需要用到其他类的对象，由spring为我们提供，我们只需要在配置文件中说明依赖关系的维护，就称之为依赖注入。</p>
+<p>依赖注入：<br>能注入的数据：有三类</p>
+<ol>
+<li>基本类型和String</li>
+<li>其他bean类型（在配置文件中或者注解配置过的bean）</li>
+<li>复杂类型/集合类型</li>
+</ol>
+<p>注入的方式：有三种<br>第一种：使用构造函数提供<br>第二种：使用set方法提供<br>第三种：使用注解提供</p>
+<blockquote>
+<ol>
+<li>使用构造函数注入:<br>使用的标签:constructor-arg；<br>标签出现的位置：bean标签的内部；<br>标签中的属性；<br> type：用于指定要注入的数据的数据类型，该数据类型也是构造函数中某个或某些参数的类型<br> index：用于指定要注入的数据给构造函数中指定索引位置的参数赋值。索引的位置是从0开始<br> name：用于指定给构造函数中指定名称的参数赋值<br> value：用于提供基本类型和String类型的数据<br> ref：用于指定其他的bean类型数据。它指的就是在spring的Ioc核心容器中出现过的bean对象</li>
+</ol>
+</blockquote>
+<p>优势：在获取bean对象时，注入数据是必须的操作，否则对象无法创建成功。<br>弊端：改变了bean对象的实例化方式，使我们在创建对象时，如果用不到这些数据，也必须提供。</p>
+<p>代码示例：</p>
+<pre><code>&lt;bean id=&quot;accountService&quot; class=&quot;com.spring.service.impl.AccountServiceImpl&quot;&gt;
+        &lt;constructor-arg name=&quot;name&quot; value=&quot;泰斯特&quot;&gt;&lt;/constructor-arg&gt;
+        &lt;constructor-arg name=&quot;age&quot; value=&quot;18&quot;&gt;&lt;/constructor-arg&gt;
+        &lt;constructor-arg name=&quot;birthday&quot; ref=&quot;now&quot;&gt;&lt;/constructor-arg&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- 配置一个日期对象 --&gt;
+    &lt;bean id=&quot;now&quot; class=&quot;java.util.Date&quot;&gt;&lt;/bean&gt;
+</code></pre><blockquote>
+<p> 2.使用set的方式注入(常用)<br>涉及的标签：property；<br>出现的位置：bean标签的内部；<br>标签的属性<br>name：用于指定注入时所调用的set方法名称；<br>value：用于提供基本类型和String类型的数据；<br>ref：用于指定其他的bean类型数据。它指的就是在spring的Ioc核心容器中出现过的bean对象；</p>
+</blockquote>
+<p>优势：创建对象时没有明确的限制，可以直接使用默认构造函数。<br>弊端：如果有某个成员必须有值，则获取对象是有可能set方法没有执行。</p>
+<p>代码示例：</p>
+<pre><code>&lt;bean id=&quot;accountService2&quot; class=&quot;com.itheima.service.impl.AccountServiceImpl2&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;TEST&quot; &gt;&lt;/property&gt;
+        &lt;property name=&quot;age&quot; value=&quot;21&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;birthday&quot; ref=&quot;now&quot;&gt;&lt;/property&gt;
+&lt;/bean&gt;</code></pre><blockquote>
+<p>3.使用注解的方式注入（暂时跳过）</p>
+</blockquote>
+<p>对于复杂类型的注入，例如集合，数组或者集合则有以下注入规则：</p>
+<blockquote>
+<p>用于给List结构集合注入的标签：<br>  list array set<br>  用于个Map结构集合注入的标签:<br>  map props<br>  注：结构类似的，标签可以互换</p>
+</blockquote>
+<p> 代码示例：</p>
+<pre><code>&lt;bean id=&quot;accountService3&quot; class=&quot;com.itheima.service.impl.AccountServiceImpl3&quot;&gt;
+        &lt;property name=&quot;myStrs&quot;&gt;
+            &lt;set&gt;
+                &lt;value&gt;AAA&lt;/value&gt;
+                &lt;value&gt;BBB&lt;/value&gt;
+                &lt;value&gt;CCC&lt;/value&gt;
+            &lt;/set&gt;
+        &lt;/property&gt;
+
+        &lt;property name=&quot;myList&quot;&gt;
+            &lt;array&gt;
+                &lt;value&gt;AAA&lt;/value&gt;
+                &lt;value&gt;BBB&lt;/value&gt;
+                &lt;value&gt;CCC&lt;/value&gt;
+            &lt;/array&gt;
+        &lt;/property&gt;
+
+        &lt;property name=&quot;mySet&quot;&gt;
+            &lt;list&gt;
+                &lt;value&gt;AAA&lt;/value&gt;
+                &lt;value&gt;BBB&lt;/value&gt;
+                &lt;value&gt;CCC&lt;/value&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+
+        &lt;property name=&quot;myMap&quot;&gt;
+            &lt;props&gt;
+                &lt;prop key=&quot;testC&quot;&gt;ccc&lt;/prop&gt;
+                &lt;prop key=&quot;testD&quot;&gt;ddd&lt;/prop&gt;
+            &lt;/props&gt;
+        &lt;/property&gt;
+
+        &lt;property name=&quot;myProps&quot;&gt;
+            &lt;map&gt;
+                &lt;entry key=&quot;testA&quot; value=&quot;aaa&quot;&gt;&lt;/entry&gt;
+                &lt;entry key=&quot;testB&quot;&gt;
+                    &lt;value&gt;BBB&lt;/value&gt;
+                &lt;/entry&gt;
+            &lt;/map&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+</code></pre>
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 jaytp@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 Yelog
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
